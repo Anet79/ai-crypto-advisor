@@ -1,0 +1,64 @@
+{
+  "memes": [
+    {
+      "id": "meme-1",
+      "title": "Doge",
+      "imageUrl": "https://i.imgur.com/CCytmwH.jpg",
+      "caption": "Still holding."
+    },
+    {
+      "id": "meme-2",
+      "title": "Surprised face",
+      "imageUrl": "https://i.imgur.com/EXLb3an.png",
+      "caption": "That gas fee was huge."
+    },
+    {
+      "id": "meme-3",
+      "title": "Smile through pain",
+      "imageUrl": "https://i.imgur.com/AkVZXy8.jpg",
+      "caption": "Red chart. I'm fine."
+    },
+    {
+      "id": "meme-4",
+      "title": "Small win",
+      "imageUrl": "https://i.imgur.com/1bhkija.jpg",
+      "caption": "One green candle. Happy."
+    },
+    {
+      "id": "meme-5",
+      "title": "Rocket",
+      "imageUrl": "https://images.unsplash.com/photo-1517976487492-5750f3195933?auto=format&w=800",
+      "caption": "To the moon."
+    },
+    {
+      "id": "meme-6",
+      "title": "Crypto coins",
+      "imageUrl": "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?auto=format&w=800",
+      "caption": "Bought the dip."
+    },
+    {
+      "id": "meme-7",
+      "title": "Sleeping cat",
+      "imageUrl": "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&w=800",
+      "caption": "Market moves. I sleep."
+    },
+    {
+      "id": "meme-8",
+      "title": "Late night",
+      "imageUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
+      "caption": "Checked prices at 3 a.m."
+    },
+    {
+      "id": "meme-9",
+      "title": "Old vs new",
+      "imageUrl": "https://i.imgur.com/6NamhuE.jpg",
+      "caption": "My Bitcoin. Shiny new coin."
+    },
+    {
+      "id": "meme-10",
+      "title": "Party time",
+      "imageUrl": "https://i.imgur.com/WTAHHKq.jpg",
+      "caption": "Green day. Let's go."
+    }
+  ]
+}

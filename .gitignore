@@ -1,0 +1,35 @@
+# Environment files (secrets — never commit)
+.env
+server/.env
+client/.env
+
+# Example env files are safe to commit
+!.env.example
+!**/.env.example
+
+# Cursor / local AI instruction files (keep locally, do not deploy)
+.cursorrules
+PROJECT_CONTEXT.md
+.cursor/
+.cursor/**
+AGENTS.md
+
+# Dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Build output
+dist/
+client/dist/
+server/dist/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
