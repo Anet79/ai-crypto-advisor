@@ -10,4 +10,13 @@ export const validateEnvAtStartup = (): void => {
     );
     process.exit(1);
   }
+
+  const isProduction = process.env.NODE_ENV === "production";
+  const clientUrl = process.env.CLIENT_URL?.trim();
+
+  if (isProduction && !clientUrl && process.env.ALLOW_VERCEL_PREVIEWS !== "true") {
+    console.warn(
+      "WARNING: CLIENT_URL is not set in production. Browsers on Vercel will be blocked by CORS until you add your frontend URL to Render env vars."
+    );
+  }
 };
