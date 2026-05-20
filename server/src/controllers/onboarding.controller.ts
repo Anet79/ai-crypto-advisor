@@ -8,7 +8,8 @@ import { Preference } from "../models/Preference";
 import { User } from "../models/User";
 import { normalizeCoinList } from "../utils/coins";
 
-export const saveOnboarding = async (req: AuthRequest, res: Response) => {  try {
+export const saveOnboarding = async (req: AuthRequest, res: Response) => {
+  try {
     const { coins, investorType, contentTypes } = req.body;
 
     if (!coins || !investorType || !contentTypes) {

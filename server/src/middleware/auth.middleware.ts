@@ -8,6 +8,7 @@ interface JwtPayload {
   userId: string;
 }
 
+/** Authenticated request — extends Express Request (`body`, `headers`, etc.) plus `userId`. */
 export interface AuthRequest extends Request {
   userId?: string;
 }
