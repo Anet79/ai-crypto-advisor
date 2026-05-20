@@ -1,3 +1,7 @@
+/**
+ * Lightweight bridge between axios interceptors and React auth state.
+ * Axios cannot import React context directly, so logout/bootstrap flags live here.
+ */
 type LogoutHandler = () => void;
 
 let logoutHandler: LogoutHandler | null = null;

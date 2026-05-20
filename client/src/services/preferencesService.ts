@@ -1,3 +1,4 @@
+/** Lightweight check used during auth bootstrap and revalidation. */
 import { isAxiosError } from "axios";
 import { api } from "./api";
 

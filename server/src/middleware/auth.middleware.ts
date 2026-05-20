@@ -1,6 +1,9 @@
+/**
+ * JWT authentication middleware for protected API routes.
+ * Expects `Authorization: Bearer <token>` and attaches `req.userId` on success.
+ */
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-
 interface JwtPayload {
   userId: string;
 }

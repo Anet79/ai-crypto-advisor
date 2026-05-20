@@ -1,3 +1,12 @@
+/**
+ * Dashboard data services: prices, news, memes, and personalized AI insights.
+ *
+ * AI insight fallback chain:
+ * 1. In-memory cache (1 h TTL, keyed by userId + preferences)
+ * 2. OpenRouter API (tries multiple models)
+ * 3. Stale cache if OpenRouter fails
+ * 4. Static demo insight templates
+ */
 import axios from "axios";
 import fs from "fs";
 import path from "path";
@@ -113,14 +122,15 @@ const FREE_OPENROUTER_MODELS = [
   "minimax/minimax-m2.5:free",
 ];
 
-const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
+const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour — per-user insight cache
 
 type InsightCacheEntry = { text: string; expiresAt: number };
 
 const insightCache = new Map<string, InsightCacheEntry>();
+// Deduplicates concurrent OpenRouter calls for the same cache key.
 const insightRequestsInFlight = new Map<string, Promise<string>>();
 
-/** Stable cache key from user + preference context. */
+/** Cache key: userId + normalized preferences (each user gets an isolated entry). */
 const buildInsightCacheKey = (
   userId: string,
   coins: string[],
@@ -176,6 +186,7 @@ const isValidInsight = (text: string): boolean => {
     return false;
   }
 
+  // Reject "thinking model" output that leaks chain-of-thought instead of a final answer.
   return !REASONING_PATTERNS.some((pattern) => pattern.test(trimmed));
 };
 
@@ -336,6 +347,7 @@ const fetchAIInsight = async (
 
   const staleCached = insightCache.get(cacheKey);
   if (staleCached) {
+    // Prefer expired cache over demo text when OpenRouter is temporarily unavailable.
     console.log("OpenRouter failed, using cached AI insight");
     return staleCached.text;
   }

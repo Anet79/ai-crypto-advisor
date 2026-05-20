@@ -1,3 +1,9 @@
+/**
+ * Shared axios client for the API.
+ *
+ * Request interceptor: attaches JWT from localStorage as Bearer token.
+ * Response interceptor: logs out on 401 for protected routes (skipped during bootstrap).
+ */
 import axios from "axios";
 import { getIsAuthBootstrapRunning, runAuthLogout } from "./authSession";
 

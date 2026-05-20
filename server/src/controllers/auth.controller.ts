@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import { User } from "../models/User";
 import { AuthRequest } from "../middleware/auth.middleware";
 
+/** Issues a 7-day JWT containing only the user id (verified by protect middleware). */
 const generateToken = (userId: string) => {
   return jwt.sign(
     { userId },

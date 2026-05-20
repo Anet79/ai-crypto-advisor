@@ -1,3 +1,7 @@
+/**
+ * Dashboard data hook. Only fetches when `enabled` is true (after route guards pass).
+ * Missing preferences trigger a redirect instead of showing a dashboard error.
+ */
 import { useCallback, useEffect, useState } from "react";
 import { isAxiosError } from "axios";
 import {

@@ -1,3 +1,6 @@
+/**
+ * Redirects authenticated users away from login/signup to their home route.
+ */
 import type { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";

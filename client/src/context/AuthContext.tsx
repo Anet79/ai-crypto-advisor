@@ -1,3 +1,13 @@
+/**
+ * Central auth state for the SPA.
+ *
+ * Responsibilities:
+ * - Bootstrap session from JWT in localStorage via /auth/me
+ * - Validate that preferences exist before allowing dashboard access
+ * - Revalidate on bfcache restore and tab visibility (prevents stale navigation state)
+ *
+ * Route guards consume `isAccessReady` and `canAccessDashboard` from this provider.
+ */
 import {
   useCallback,
   useEffect,
@@ -63,6 +73,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     !isLoading &&
     !isRevalidating &&
     (!isAuthenticated || preferencesState === "ready");
+  // Dashboard access requires auth, preferences validation, and onboarding completion.
   const canAccessDashboard = computeCanAccessDashboard({
     isAuthenticated,
     isAccessReady,
@@ -105,11 +116,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       try {
         const preferencesExist = await checkPreferencesExist();
 
-        if (requestId !== undefined && requestId !== revalidateRequestId.current) {
-          return;
-        }
+      if (requestId !== undefined && requestId !== revalidateRequestId.current) {
+        return;
+      }
 
-        const reconciledUser = reconcileUserWithPreferences(
+      // Keep onboarding flag consistent with whether a Preference document exists.
+      const reconciledUser = reconcileUserWithPreferences(
           currentUser,
           preferencesExist
         );
@@ -251,6 +263,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
 
+    // Block rendering immediately so stale bfcache state cannot reach protected routes.
     flushSync(() => {
       setIsRevalidating(true);
       setPreferencesState("loading");
@@ -270,6 +283,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return;
       }
 
+      // On network failure, deny dashboard access rather than trusting stale state.
       setHasPreferences(false);
       setUser((currentUser) =>
         currentUser
@@ -306,6 +320,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     skipVisibilityRevalidate.current = false;
   }, []);
 
+  // Recover from browser back-forward cache and tab focus without trusting frozen React state.
   useLayoutEffect(() => {
     const handlePageShow = (event: PageTransitionEvent) => {
       if (!shouldRecoverFromBfcache(event)) {

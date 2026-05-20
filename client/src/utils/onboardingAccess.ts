@@ -1,3 +1,6 @@
+/**
+ * Onboarding and dashboard access rules shared by route guards and pages.
+ */
 import { isAxiosError } from "axios";
 import type { User } from "../context/auth-context";
 
