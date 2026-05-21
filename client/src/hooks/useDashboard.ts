@@ -70,6 +70,20 @@ export function useDashboard({
     }
   }, [enabled, handleLoadError]);
 
+  const refreshDashboardQuietly = useCallback(async () => {
+    if (!enabled) {
+      return;
+    }
+
+    try {
+      const data = await getDashboard();
+      setDashboard(data);
+      setError(null);
+    } catch (err) {
+      handleLoadError(err);
+    }
+  }, [enabled, handleLoadError]);
+
   const sendFeedback = async (
     target: FeedbackTarget,
     value: FeedbackValue,
@@ -113,6 +127,21 @@ export function useDashboard({
       cancelled = true;
     };
   }, [enabled, handleLoadError]);
+
+  useEffect(() => {
+    if (!enabled) {
+      return;
+    }
+
+    const POLL_INTERVAL_MS = 45_000;
+    const intervalId = window.setInterval(() => {
+      void refreshDashboardQuietly();
+    }, POLL_INTERVAL_MS);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, [enabled, refreshDashboardQuietly]);
 
   return {
     dashboard,

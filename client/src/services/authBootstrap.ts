@@ -18,8 +18,7 @@ function normalizeUser(raw: Record<string, unknown>): User {
 }
 
 function isInvalidSessionStatus(status: number | undefined) {
-  // Treat missing user (404 on /auth/me) the same as an expired token.
-  return status === 401 || status === 403 || status === 404;
+  return status === 401 || status === 403;
 }
 
 function getStoredToken() {

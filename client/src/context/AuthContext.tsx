@@ -129,10 +129,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         applyValidatedSession(reconciledUser, preferencesExist);
       } catch {
         if (requestId === undefined || requestId === revalidateRequestId.current) {
-          setHasPreferences(false);
+          // Preferences API unreachable — keep session from /auth/me instead of forcing onboarding.
+          const fallbackHasPreferences = currentUser.hasCompletedOnboarding;
           applyValidatedSession(
-            reconcileUserWithPreferences(currentUser, false),
-            false
+            reconcileUserWithPreferences(currentUser, fallbackHasPreferences),
+            fallbackHasPreferences
           );
         }
       } finally {
@@ -279,17 +280,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       applyValidatedSession(validatedUser, preferencesExist);
     } catch {
-      if (requestId !== revalidateRequestId.current) {
-        return;
-      }
-
-      // On network failure, deny dashboard access rather than trusting stale state.
-      setHasPreferences(false);
-      setUser((currentUser) =>
-        currentUser
-          ? reconcileUserWithPreferences(currentUser, false)
-          : null
-      );
+      // Keep existing session on transient network errors — only auth failures clear the token.
     } finally {
       if (requestId === revalidateRequestId.current) {
         setPreferencesState("ready");

@@ -1,17 +1,28 @@
-import { Router } from "express";
+import { Router, Response } from "express";
 import { protect, AuthRequest } from "../middleware/auth.middleware";
-import { User } from "../models/User";
+import { AuthServiceError, getCurrentUser } from "../services/authService";
 
 const router = Router();
 
-router.get("/me", protect, async (req: AuthRequest, res) => {
-  const user = await User.findById(req.userId).select("-password");
+router.get("/me", protect, async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = req.userId;
 
-  if (!user) {
-    return res.status(404).json({ message: "User not found" });
+    if (!userId) {
+      return res.status(401).json({ message: "Not authorized" });
+    }
+
+    const user = await getCurrentUser(userId);
+
+    return res.json({ user });
+  } catch (error) {
+    if (error instanceof AuthServiceError) {
+      return res.status(error.status).json({ message: error.clientMessage });
+    }
+
+    console.error(error);
+    return res.status(500).json({ message: "Server error" });
   }
-
-  res.json(user);
 });
 
 export default router;

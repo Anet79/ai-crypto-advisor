@@ -5,12 +5,10 @@
 import { Response } from "express";
 import { AuthRequest } from "../middleware/auth.middleware";
 import { Preference } from "../models/Preference";
-import {
-  getAIInsight,
-  getCoinPrices,
-  getCryptoMeme,
-  getMarketNews,
-} from "../services/dashboard.service";
+import { getAIInsight } from "../services/aiInsightService";
+import { getCryptoMeme } from "../services/memeService";
+import { getMarketNews } from "../services/newsService";
+import { getCoinPrices } from "../services/priceService";
 
 export const getDashboard = async (req: AuthRequest, res: Response) => {
   try {
@@ -25,11 +23,11 @@ export const getDashboard = async (req: AuthRequest, res: Response) => {
     const prices = await getCoinPrices(preferences.coins);
     const news = getMarketNews(preferences.coins);
     const insight = await getAIInsight(
-        String(req.userId),
-        preferences.coins,
-        preferences.investorType,
-        preferences.contentTypes
-      );
+      String(req.userId),
+      preferences.coins,
+      preferences.investorType,
+      preferences.contentTypes
+    );
     const meme = getCryptoMeme();
 
     return res.json({

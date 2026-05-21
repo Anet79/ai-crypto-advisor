@@ -2,7 +2,8 @@
  * Route guard for authenticated pages (/onboarding, /dashboard).
  * Redirects based on `canAccessDashboard` — not just the onboarding flag alone.
  */
-import { Navigate, Outlet, useLocation } from "react-router-dom";import { useAuth } from "../hooks/useAuth";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 export default function ProtectedRoute() {
   const { isAuthenticated, canAccessDashboard, isAccessReady } = useAuth();
